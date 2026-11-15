@@ -1,0 +1,30 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'it.crowclaw.fude'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'it.crowclaw.fude'
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName '1.0'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            // Firmato con la chiave di debug: installabile subito sul telefono.
+            // Per il Play Store serve una chiave tua (vedi README).
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
