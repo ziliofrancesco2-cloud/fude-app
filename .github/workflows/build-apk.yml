@@ -3,8 +3,15 @@ name: Compila APK
 on:
   push:
     branches: [ main ]
-    paths: [ 'app/**', 'build.gradle', 'settings.gradle', '.github/workflows/**' ]
+    paths: [ 'Fude-v2/fude-android/**', '.github/workflows/**' ]
   workflow_dispatch:
+
+permissions:
+  contents: write
+
+defaults:
+  run:
+    working-directory: Fude-v2/fude-android
 
 jobs:
   build:
@@ -21,13 +28,37 @@ jobs:
         with:
           gradle-version: '8.7'
 
+      - name: Chiave di firma
+        env:
+          KS_B64: ${{ secrets.FUDE_KEYSTORE_B64 }}
+        run: |
+          if [ -n "$KS_B64" ]; then
+            echo "$KS_B64" | base64 -d > "$RUNNER_TEMP/fude.jks"
+            echo "FUDE_KEYSTORE=$RUNNER_TEMP/fude.jks" >> "$GITHUB_ENV"
+          else
+            echo "::warning::Segreto FUDE_KEYSTORE_B64 mancante: APK firmato con chiave temporanea"
+          fi
+
       - name: Compila
-        run: gradle assembleRelease --no-daemon
+        env:
+          FUDE_KS_PASS: ${{ secrets.FUDE_KS_PASS }}
+        run: gradle assembleRelease --no-daemon -Pvc=${{ github.run_number }}
 
       - name: Rinomina
-        run: cp app/build/outputs/apk/release/app-release.apk Fude.apk
+        run: cp app/build/outputs/apk/release/app-release.apk "$GITHUB_WORKSPACE/Fude.apk"
 
       - uses: actions/upload-artifact@v5
         with:
           name: Fude-apk
           path: Fude.apk
+
+      - name: Pubblica la versione
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ github.run_number }}
+          name: Fude 1.${{ github.run_number }}
+          make_latest: true
+          files: Fude.apk
+          body: |
+            Scarica **Fude.apk** qui sotto e aprilo sul telefono Android.
+            Link fisso all'ultima versione: https://github.com/${{ github.repository }}/releases/latest/download/Fude.apk
