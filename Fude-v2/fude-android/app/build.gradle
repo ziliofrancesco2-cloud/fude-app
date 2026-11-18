@@ -1,0 +1,43 @@
+plugins {
+    id 'com.android.application'
+}
+
+def vc = (project.findProperty('vc') ?: '2').toString().toInteger()
+def ksPath = System.getenv('FUDE_KEYSTORE')
+
+android {
+    namespace 'it.crowclaw.fude'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'it.crowclaw.fude'
+        minSdk 24
+        targetSdk 34
+        versionCode vc
+        versionName "1.${vc}"
+    }
+
+    signingConfigs {
+        release {
+            // Chiave fissa (segreto GitHub): così ogni nuova versione si installa sopra la precedente.
+            if (ksPath) {
+                storeFile file(ksPath)
+                storePassword System.getenv('FUDE_KS_PASS')
+                keyAlias 'fude'
+                keyPassword System.getenv('FUDE_KS_PASS')
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig ksPath ? signingConfigs.release : signingConfigs.debug
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
