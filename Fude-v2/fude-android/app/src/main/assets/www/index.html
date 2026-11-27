@@ -341,6 +341,27 @@ input.time{background:var(--ink);border:1px solid var(--line);border-radius:12px
 .diff .miss{color:#c0391f;text-decoration:underline;text-decoration-style:wavy}
 .diff .extra{color:#c0391f;text-decoration:line-through;opacity:.7}
 
+
+.ai-res{color:var(--paper);white-space:normal}
+.ai-top{display:flex;gap:14px;align-items:center;margin-bottom:6px}
+.ai-score{width:74px;height:74px;border-radius:50%;border:4px solid var(--c);display:grid;place-items:center;flex:none;line-height:1;text-align:center}
+.ai-score b{font-family:var(--serif);font-size:28px;font-weight:400}.ai-score small{font-size:11px;color:var(--mute);display:block}
+.ai-j{font-family:var(--serif);font-size:19px;line-height:1.3}
+.ai-sec{margin-top:12px}.ai-sec h4{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--shu2);margin-bottom:4px;font-weight:600}
+.ai-sec p{font-size:14.5px;margin:3px 0;white-space:normal}
+.ai-err{background:var(--ink3);border-radius:12px;padding:9px 12px;margin-top:6px;white-space:normal}
+.ai-err s{color:var(--shu2);font-family:var(--jp)}.ai-err b{color:var(--ok);font-family:var(--jp);font-weight:700}.ai-err small{display:block;color:var(--paper2);font-size:13px;margin-top:3px}
+.poster{position:relative;border-radius:22px;padding:34px 24px 26px;margin-top:20px;overflow:hidden;color:#fff;background:radial-gradient(120% 90% at 0% 0%,hsl(var(--h) 80% 55%),transparent 60%),radial-gradient(120% 90% at 100% 100%,hsl(calc(var(--h) + 60) 70% 40%),transparent 60%),#17131c}
+.poster::after{content:"♪";position:absolute;right:16px;top:6px;font-size:90px;opacity:.15}
+.poster .pk{font-family:var(--jp);font-weight:900;font-size:clamp(40px,10vw,64px);line-height:1.1}
+.poster .pr{font-family:var(--hand);font-size:17px;opacity:.85;margin-top:6px}
+.poster .pa{font-size:13px;letter-spacing:.06em;opacity:.8;margin-top:12px;text-transform:uppercase}
+.lvid{width:100%;max-height:62vh;border-radius:20px;background:#000;margin-top:20px;display:block}
+.bnote{color:var(--paper2);font-size:14.5px;margin:14px 0 4px;line-height:1.6}
+a.tbtn{text-decoration:none;display:inline-block}
+.koto{margin-top:22px;border:1px dashed rgba(229,72,46,.45);border-radius:20px;padding:18px}
+.koto .kj{font-family:var(--jp);font-size:26px;font-weight:700}.koto .kr{font-family:var(--hand);color:var(--mute);font-size:14px}
+.koto .kl{font-family:var(--serif);font-style:italic;font-size:18px;margin-top:8px}.koto .km{font-size:14px;color:var(--paper2);margin-top:4px}
 </style>
 </head>
 <body>
@@ -392,7 +413,7 @@ input.time{background:var(--ink);border:1px solid var(--line);border-radius:12px
 <section class="block" id="metodo">
   <div class="wrap">
     <div class="sec-head">
-      <h2 class="rv"><span class="jp">練習の流れ</span>Otto esercizi,<br><em>un rituale.</em></h2>
+      <h2 class="rv"><span class="jp">練習の流れ</span>Dieci momenti,<br><em>un rituale.</em></h2>
       <p class="rv">Ricalcati sulle prove d'esame: test di kanji senza dizionario, forme grammaticali da inserire, scelta multipla, frasi dall'italiano al giapponese e traduzione di un testo. I kanji tornano con ripetizione dilazionata: quelli che sbagli li rivedi presto, quelli solidi più avanti.</p>
     </div>
     <div class="cards" id="methodCards">
@@ -403,6 +424,8 @@ input.time{background:var(--ink);border:1px solid var(--line);border-radius:12px
       <div class="spot rv"><div class="num">05 · 文法</div><div class="kj">文</div><h3>Grammatica</h3><p>Completa la frase con la forma giusta: ように, ことになる, につれて…</p></div>
       <div class="spot rv"><div class="num">06 · 異文和訳</div><div class="kj">訳</div><h3>Ibunwayaku e composizione</h3><p>Una frase dal giapponese all'italiano e una dall'italiano al giapponese. Prima scrivi, poi vedi la soluzione.</p></div>
       <div class="spot rv"><div class="num">07 · 翻訳</div><div class="kj">翻</div><h3>Testo del giorno</h3><p>Un breve testo da tradurre in italiano, con glossario nascosto. Facoltativo, come allenamento per la prova di traduzione.</p></div>
+      <div class="spot rv"><div class="num">09 · 自由作文</div><div class="kj">作</div><h3>Domande aperte</h3><p>Rispondi con frasi tue a domande vere, come in un colloquio o in un tema. L'IA ti dà un voto, ti dice cosa va bene e cosa correggere, senza riscriverti la risposta.</p></div>
+      <div class="spot rv"><div class="num">10 · 休憩</div><div class="kj">歌</div><h3>Pause musicali</h3><p>Ogni tanto una canzone giapponese amata, le parole del suo titolo e un proverbio. Per ricordarti perché hai iniziato.</p></div>
       <div class="spot rv"><div class="num">08 · 聞き取り</div><div class="kj">聞</div><h3>Dettato</h3><p>Per Giapponese 3: ascolti una frase (fino a 3 volte, anche al rallentatore) e la scrivi in kanji. Vedi subito cosa manca e cosa è sbagliato.</p></div>
     </div>
   </div>
@@ -928,6 +951,62 @@ use:"Solo nel parlato e nei messaggi tra amici. Nei manga e negli anime sono ovu
 ex:[["Ho dimenticato l'ombrello!","傘、忘れちゃった！","かさ、わすれちゃった！"],["Devo andare.","もう行かなきゃ。","もういかなきゃ。"],["Dicono che domani c'è vacanza.","明日、休みだって。","あした、やすみだって。"],["Fa freddo oggi, eh?","今日、寒いね。","きょう、さむいね。"],["Chissà se domani pioverà.","明日、雨降るかな。","あした、あめふるかな。"]]},
 ];
 
+// Domande aperte: q (giapponese), it (traduzione), h (grammatica suggerita), m (risposta modello)
+const OPEN2 = [
+{q:"週末は何をしましたか。",it:"Cosa hai fatto nel weekend?",h:["〜たり〜たりする","〜て、〜"],m:"週末は友達と映画を見たり、買い物をしたりしました。とても楽しかったです。"},
+{q:"あなたの町について教えてください。",it:"Parlami della tua città.",h:["〜し、〜し","〜ので"],m:"私の町は小さいですが、静かだし、自然が多いし、住みやすいです。でも、駅から遠いので少し不便です。"},
+{q:"日本に行ったら、何をしたいですか。",it:"Se andassi in Giappone, cosa vorresti fare?",h:["〜たら","〜たい"],m:"日本に行ったら、京都のお寺を見たり、本場のラーメンを食べたりしたいです。"},
+{q:"子どものころできなかったことで、今できるようになったことはありますか。",it:"C'è qualcosa che da bambino non sapevi fare e ora sai fare?",h:["可能形","〜ようになる"],m:"子どものころは泳げませんでしたが、今は泳げるようになりました。"},
+{q:"日本語の勉強で、何がいちばん難しいですか。どうしてですか。",it:"Nello studio del giapponese, cosa trovi più difficile? Perché?",h:["いちばん","〜ので / 〜から"],m:"漢字がいちばん難しいです。読み方がたくさんあるので、覚えるのが大変です。"},
+{q:"最近、だれかに何かをしてもらいましたか。",it:"Recentemente qualcuno ti ha fatto un favore?",h:["〜てもらう","〜てくれる"],m:"先週、友達に引っ越しを手伝ってもらいました。とても助かりました。"},
+{q:"健康のために、何かしていますか。",it:"Fai qualcosa per la salute?",h:["〜ために","〜ようにしている"],m:"健康のために、毎朝三十分歩くようにしています。"},
+{q:"子どものころ、両親に何をさせられましたか。",it:"Da bambino, cosa ti facevano fare (per forza) i tuoi genitori?",h:["使役受身"],m:"子どものころ、母にピアノを練習させられました。でも、今は感謝しています。"},
+{q:"明日雨が降ったら、どうしますか。",it:"Se domani piove, cosa fai?",h:["〜たら","〜たり〜たりする"],m:"明日雨が降ったら、家で本を読んだり、映画を見たりします。"},
+{q:"久しぶりに先生に会いました。何と言いますか。",it:"Incontri il tuo professore dopo tanto tempo. Cosa gli dici?",h:["尊敬語","謙譲語"],m:"先生、お久しぶりです。お元気でいらっしゃいますか。またお会いできてうれしいです。"},
+{q:"好きな季節はいつですか。どうしてですか。",it:"Qual è la tua stagione preferita? Perché?",h:["〜し","〜からです"],m:"秋が好きです。涼しいし、食べ物がおいしいからです。"},
+{q:"今までで一番楽しかった旅行について話してください。",it:"Parla del viaggio più bello che hai fatto finora.",h:["〜とき","〜たことがある"],m:"去年、友達とローマへ行ったとき、とても楽しかったです。古い建物をたくさん見て、おいしいパスタも食べました。"},
+];
+const OPEN3 = [
+{q:"日本語を勉強し始めたきっかけは何ですか。",it:"Cosa ti ha spinto a iniziare a studiare giapponese?",h:["きっかけ","〜ようになる"],m:"子どものころアニメを見ていたのがきっかけで、日本の文化に興味を持つようになりました。"},
+{q:"あなたの国の少子高齢化について説明してください。",it:"Descrivi la situazione della denatalità e dell'invecchiamento nel tuo paese.",h:["〜一方で","〜と考えられている"],m:"イタリアでも少子高齢化が進んでいます。生まれる子どもの数が減る一方で、高齢者の割合は増えており、年金の問題が心配されています。"},
+{q:"SNSの良い点と悪い点について、あなたの意見を書いてください。",it:"Scrivi la tua opinione sui pro e contro dei social network.",h:["〜一方で","〜わけではない"],m:"SNSは情報がすぐに手に入る一方で、時間を使いすぎてしまうこともあります。便利だからといって、何でも信じていいわけではありません。"},
+{q:"将来どんな仕事をしたいですか。そのために何をしていますか。",it:"Che lavoro vorresti fare in futuro? Cosa stai facendo per riuscirci?",h:["〜ために","〜ようにしている"],m:"将来は翻訳の仕事をしたいです。そのために、毎日日本語のニュースを読むようにしています。"},
+{q:"観光客が増えると、どんな問題が起こると思いますか。",it:"Che problemi può causare l'aumento dei turisti?",h:["〜せいで","〜によって"],m:"観光客が増えたせいで、町が混雑して住民の生活に影響が出ることがあります。地域によっては家賃も上がっています。"},
+{q:"テレワークに賛成ですか、反対ですか。理由も書いてください。",it:"Sei favorevole o contrario al lavoro da remoto? Spiega perché.",h:["〜からといって〜わけではない","〜ので"],m:"賛成です。通勤の時間がなくなるので、家族と過ごす時間が増えます。ただ、家で働くからといって楽になるわけではありません。"},
+{q:"もし一年間日本に住めるとしたら、何をしたいですか。",it:"Se potessi vivere un anno in Giappone, cosa vorresti fare?",h:["〜としたら","〜うちに"],m:"もし一年間日本に住めるとしたら、若いうちにいろいろな地方を旅行して、方言も覚えてみたいです。"},
+{q:"あなたにとって一番大切なものは何ですか。",it:"Qual è la cosa più importante per te?",h:["〜にとって","〜からです"],m:"私にとって一番大切なのは家族です。つらいときにいつも支えてくれるからです。"},
+{q:"日本語が上手になるにつれて、何が変わりましたか。",it:"Man mano che il tuo giapponese migliora, cosa è cambiato?",h:["〜につれて","〜ようになった"],m:"日本語が上手になるにつれて、アニメを字幕なしで見られるようになり、日本の友達も増えました。"},
+{q:"食品ロスを減らすために、私たちに何ができると思いますか。",it:"Cosa possiamo fare noi per ridurre lo spreco alimentare?",h:["〜ために","〜ように心がける"],m:"必要な分だけ買うように心がけることが大切だと思います。また、残った料理は次の日に食べるようにしています。"},
+{q:"面接で、敬語を使って自己紹介をしてください。",it:"Presentati con il keigo, come a un colloquio di lavoro.",h:["謙譲語","〜させていただく"],m:"はじめまして。〇〇と申します。ヴェネツィアの大学で日本語を勉強しております。本日はどうぞよろしくお願いいたします。"},
+{q:"最近驚いたことについて話してください。",it:"Racconta qualcosa che ti ha sorpreso di recente.",h:["〜たことに","〜たところ"],m:"驚いたことに、日本の友達に方言で話しかけられたところ、半分しか分かりませんでした。"},
+];
+
+// Pause motivazionali: canzoni (solo titolo, lessico del titolo e contesto; niente testi)
+const SONGS = [
+{t:"夜に駆ける",r:"よるにかける",a:"YOASOBI",y:2019,w:[["夜","よる","notte"],["駆ける","かける","correre, lanciarsi"]],n:"Il singolo d'esordio di YOASOBI, nato da un racconto pubblicato online: il loro marchio di fabbrica è trasformare storie brevi in canzoni.",q:"YOASOBI 夜に駆ける Official Music Video"},
+{t:"Lemon",r:"レモン",a:"米津玄師 (よねづ けんし)",y:2018,w:[["米津玄師","よねづけんし","nome dell'artista"],["主題歌","しゅだいか","sigla, canzone tema"]],n:"Sigla del drama アンナチュラル. Nel 2026 il suo video è stato il primo cantato in giapponese a superare il miliardo di visualizzazioni su YouTube.",yt:"SX_ViT4Ra7k",q:"米津玄師 Lemon"},
+{t:"マリーゴールド",r:"まりーごーるど",a:"あいみょん",y:2018,w:[["マリーゴールド","まりーごーるど","calendula (dall'inglese marigold)"]],n:"Il video è stato girato a Shanghai: Aimyon gira in skateboard per le strade. Ottimo per allenare la lettura del katakana.",q:"あいみょん マリーゴールド OFFICIAL MUSIC VIDEO"},
+{t:"Pretender",r:"プリテンダー",a:"Official髭男dism (ひげだん)",y:2019,w:[["髭","ひげ","barba"],["男","おとこ","uomo"]],n:"Sigla del film コンフィデンスマンJP. Il nome della band, 髭男 (l'uomo con la barba), è un bel ripasso di kanji.",yt:"TQ8WlA2GXbk",q:"Official髭男dism Pretender Official Video"},
+{t:"怪獣の花唄",r:"かいじゅうのはなうた",a:"Vaundy",y:2020,w:[["怪獣","かいじゅう","mostro (i kaijū dei film)"],["花","はな","fiore"],["唄","うた","canto, canzone"]],n:"Uscita nel 2020, Vaundy l'ha cantata al Kōhaku Uta Gassen di fine 2022. Nel titolo c'è un gioco: 鼻歌 (はなうた, canticchiare) scritto con 花 (fiore).",q:"Vaundy 怪獣の花唄 Official Music Video"},
+{t:"前前前世",r:"ぜんぜんぜんせ",a:"RADWIMPS",y:2016,w:[["前世","ぜんせ","vita precedente"],["前","ぜん / まえ","prima, davanti"]],n:"Sigla del film d'animazione 君の名は。 di Makoto Shinkai: «dalla vita prima della vita prima della vita».",q:"RADWIMPS 前前前世 movie ver MV"},
+{t:"春泥棒",r:"はるどろぼう",a:"ヨルシカ",y:2021,w:[["春","はる","primavera"],["泥棒","どろぼう","ladro"]],n:"Secondo la band, nel brano i fiori sono la durata della vita e il vento è il tempo che la porta via: il «ladro di primavera».",q:"ヨルシカ 春泥棒 OFFICIAL VIDEO"},
+{t:"紅蓮華",r:"ぐれんげ",a:"LiSA",y:2019,w:[["紅蓮","ぐれん","rosso fuoco, cremisi"],["華","げ / はな","fiore (registro letterario)"]],n:"La prima sigla dell'anime 鬼滅の刃 (Demon Slayer). 華 qui si legge げ, una lettura rara.",q:"LiSA 紅蓮華 MUSiC CLiP"},
+{t:"戦場のメリークリスマス",r:"せんじょうのめりーくりすます",a:"坂本龍一 (さかもと りゅういち)",y:1983,w:[["戦場","せんじょう","campo di battaglia"],["坂本龍一","さかもとりゅういち","nome del compositore"]],n:"Il tema strumentale del film di Nagisa Ōshima, in cui Sakamoto recitava anche. In Occidente è noto come «Merry Christmas, Mr. Lawrence».",q:"坂本龍一 Merry Christmas Mr. Lawrence"},
+];
+const KOTO = [
+["七転び八起き","ななころびやおき","Cadi sette volte, rialzati otto.","Non arrendersi mai, qualunque cosa succeda."],
+["継続は力なり","けいぞくはちからなり","La costanza è forza.","Fare un po' ogni giorno porta lontano."],
+["石の上にも三年","いしのうえにもさんねん","Anche su una pietra, tre anni.","Con la pazienza anche le cose difficili diventano facili."],
+["塵も積もれば山となる","ちりもつもればやまとなる","Anche la polvere, accumulandosi, diventa una montagna.","Tanti piccoli sforzi fanno un grande risultato."],
+["急がば回れ","いそがばまわれ","Se hai fretta, fai il giro lungo.","La strada sicura è spesso la più veloce."],
+["猿も木から落ちる","さるもきからおちる","Anche le scimmie cadono dagli alberi.","Anche gli esperti sbagliano: gli errori fanno parte dello studio."],
+["千里の道も一歩から","せんりのみちもいっぽから","Anche un viaggio di mille ri inizia con un passo.","Ogni grande obiettivo comincia da un piccolo inizio."],
+["一期一会","いちごいちえ","Un incontro, un'occasione.","Ogni momento è unico: vivilo pienamente."],
+["好きこそ物の上手なれ","すきこそもののじょうずなれ","È proprio ciò che ami che ti rende bravo.","La passione è il miglior insegnante."],
+["案ずるより産むが易し","あんずるよりうむがやすし","Partorire è più facile che preoccuparsene.","Le cose sono meno difficili di quanto temi: inizia."],
+];
+const IG_TAGS=[["#jpop","jpop"],["#citypop","citypop"],["#日本の風景","日本の風景"],["#japanaesthetic","japanaesthetic"]];
+
 </script>
 <script>
 (function(){
@@ -946,7 +1025,7 @@ function shuffle(a,r){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.flo
 
 /* ---------- stato ---------- */
 const LS="fude.v1";
-function defaults(){return {v:1,level:"2",goal:20,rem:{on:false,h:20,m:0},onboarded:false,srs:{},days:{},custom:[],updatedAt:0}}
+function defaults(){return {v:1,level:"2",goal:20,rem:{on:false,h:20,m:0},brk:8,playlist:[],songIx:0,onboarded:false,srs:{},days:{},custom:[],updatedAt:0}}
 let state=defaults();
 try{const s=JSON.parse(localStorage.getItem(LS)||"null");if(s&&s.v===1)state=Object.assign(defaults(),s)}catch(e){}
 let dbRef=null, saveTimer=null, saving=false, pending=false;
@@ -1162,9 +1241,14 @@ function buildSession(){
   for(let k=0;k<c.dict;k++)steps.push({t:"dict",s:rest.pop()});
   const tr=c.trans===3?(two?["j2i","i2j","i2j"]:["j2i","j2i","i2j"]):[two?"i2j":"j2i"];
   tr.forEach(t=>steps.push({t,s:rest.pop()}));
+  const OP=two?OPEN2:OPEN3, nOpen=n>=30?2:1;
+  shuffle(OP,r).slice(0,nOpen).forEach(o=>steps.push({t:"open",o}));
   if(c.text)steps.push({t:"text",x:lv.T[TODAY%lv.T.length]});
-  steps.push({t:"recap"});
-  return steps;
+  const every=state.brk==null?8:state.brk;
+  let out=steps;
+  if(every>0){out=[];let k=0,cnt=0;steps.forEach((s,i)=>{out.push(s);cnt++;if(cnt>=every&&i<steps.length-2){out.push({t:"break",k:(TODAY+k)%KOTO.length});k++;cnt=0}})}
+  out.push({t:"recap"});
+  return out;
 }
 
 /* ---------- sessione ---------- */
@@ -1190,7 +1274,7 @@ function renderStep(anim){
   $("#sLbl").textContent=st.t==="recap"?"お疲れ様":`${S.ix+1} / ${n-1}`;
   $("#sBar").style.width=(S.ix/(n-1)*100)+"%";
   const stage=$("#stage");
-  const draw=()=>{stage.innerHTML="";({dict:stDict,conj:stConj,write:stWrite,read:stRead,pick:stPick,cloze:stCloze,j2i:stTrans,i2j:stTrans,text:stText,recap:stRecap})[st.t](stage,st);$("#sBody").scrollTop=0;
+  const draw=()=>{stage.innerHTML="";({open:stOpen,break:stBreak,dict:stDict,conj:stConj,write:stWrite,read:stRead,pick:stPick,cloze:stCloze,j2i:stTrans,i2j:stTrans,text:stText,recap:stRecap})[st.t](stage,st);$("#sBody").scrollTop=0;
     if(G&&!RM)G.from(stage.children,{y:30,opacity:0,duration:.6,stagger:.06,ease:"power3.out"})};
   if(anim&&G&&!RM&&stage.children.length)G.to(stage.children,{y:-20,opacity:0,duration:.25,stagger:.02,ease:"power2.in",onComplete:draw});else draw();
 }
@@ -1342,26 +1426,9 @@ function showSolution(stage,s,j2i,attempt){
   const sol=H(`<div class="solution"><div class="jp">${esc(s.jp)}${sayBtn(s.jp,true)}</div><div class="kana">${esc(s.kana)}</div><div class="it">${esc(s.it)}</div>
   <div class="gram">${s.g.map(g=>`<div><b>${esc(g[0])}</b>${esc(g[1])}</div>`).join("")}</div>${rulesFor(s.g)}</div>`);
   nr.before(sol);
-  nr.innerHTML=`<button class="tbtn" data-ai>Fatti correggere da Claude</button><button class="tbtn" data-a="g" data-g="0">Sbagliata</button><button class="tbtn" data-a="g" data-g="1">Quasi</button><button class="tbtn main" data-a="g" data-g="2">Giusta</button>`;
+  nr.innerHTML=`<button class="tbtn" data-ai>✨ Valuta con IA</button><button class="tbtn" data-a="g" data-g="0">Sbagliata</button><button class="tbtn" data-a="g" data-g="1">Quasi</button><button class="tbtn main" data-a="g" data-g="2">Giusta</button>`;
   const solEl=stage.querySelector(".solution");if(G&&!RM)G.from(solEl,{y:20,opacity:0,duration:.5,ease:"power3.out"});
-  getSample().then(fn=>{const b=nr.querySelector("[data-ai]");if(!fn&&b)b.remove();else if(b)b.onclick=()=>aiCorrect(stage,b,fn,j2i?"giapponese→italiano":"italiano→giapponese",j2i?s.jp:s.it,j2i?s.it:s.jp,attempt)});
-}
-async function aiCorrect(stage,btn,fn,dir,src,ref,attempt){
-  btn.disabled=true;
-  const box=H(`<div class="ai-box"><div class="h">Correzione di Claude</div><span class="t">Sto leggendo il tuo tentativo…</span></div>`);
-  stage.querySelector(".next-row").before(box);const t=stage.querySelectorAll(".ai-box .t");const out=t[t.length-1];
-  const prompt=`Sei un insegnante di lingua giapponese per studenti universitari italiani del terzo anno (livello N3, manuale TOBIRA). Lo studente ha fatto un esercizio di traduzione ${dir}.
-Testo di partenza: «${src}»
-Traduzione di riferimento: «${ref}»
-Tentativo dello studente: «${attempt}»
-
-Rispondi in italiano, in modo conciso (massimo 120 parole), con questo schema:
-✓ Cosa va bene (1 riga)
-✗ Errori: elenca ogni errore concreto (particelle, coniugazioni, kanji sbagliati o parole scritte in kana che a questo livello andrebbero in kanji, scelte lessicali, senso). Per ognuno spiega brevemente il perché.
-Voto: x/5
-Accetta come corrette le traduzioni alternative valide anche se diverse dal riferimento. Non riscrivere l'intera frase corretta: indica solo le parti da cambiare, così lo studente deve rifletterci da solo.`;
-  try{const r=await fn(prompt,{modelTier:"default",onText:({text})=>{out.textContent=text}});out.textContent=r.text}
-  catch(e){out.textContent=e&&e.code==="rate_limited"?"Troppe richieste per ora: riprova tra qualche minuto.":"Correzione non disponibile in questo momento.";if(e&&e.code==="not_granted")sampleFn=null}
+  aiWire(stage,nr,{kind:j2i?"j2i":"i2j",src:j2i?s.jp:s.it,ref:j2i?s.it:s.jp,answer:attempt});
 }
 function stText(stage,{x}){
   stage.append(H(`<div><div class="kind"><span class="jp">翻訳</span> testo del giorno · facoltativo</div><div class="q">${esc(x.t)}</div>
@@ -1376,8 +1443,8 @@ function stText(stage,{x}){
     if(a==="skip"||a==="next")next();
     if(a==="sol"){if(!ta.value.trim()){toast("Scrivi prima la tua traduzione");return}ta.readOnly=true;
       nr.before(H(`<div class="solution"><div class="it" style="margin-top:0">${esc(x.it)}</div></div>`));
-      nr.innerHTML=`<button class="tbtn" data-ai>Fatti correggere da Claude</button><button class="tbtn main" data-a="next">Avanti →</button>`;
-      getSample().then(fn=>{const ab=nr.querySelector("[data-ai]");if(!fn&&ab)ab.remove();else if(ab)ab.onclick=()=>aiCorrect(stage,ab,fn,"giapponese→italiano (testo)",x.jp,x.it,ta.value)})}
+      nr.innerHTML=`<button class="tbtn" data-ai>✨ Valuta con IA</button><button class="tbtn main" data-a="next">Avanti →</button>`;
+      aiWire(stage,nr,{kind:"text",src:x.jp,ref:x.it,answer:ta.value})}
   };
 }
 function stRecap(stage){
@@ -1541,6 +1608,7 @@ function openSettings(first){
   <div class="set-sec"><h3>Obiettivo giornaliero</h3><p>Quanti esercizi vuoi fare ogni giorno. La sessione si adatta.</p><div class="seg" id="sGoal">${GOALS.map(g=>`<button data-g="${g[0]}" class="${(state.goal||20)===g[0]?"on":""}">${g[1]} · ${g[0]}<small>${g[2]}</small></button>`).join("")}</div></div>
   ${IS_APP?`<div class="set-sec"><h3>Promemoria</h3><p>Una notifica al giorno se non hai ancora raggiunto l'obiettivo.</p><div class="row2"><button class="switch ${r.on?"on":""}" id="sRem" aria-label="Promemoria"></button><input type="time" class="time" id="sTime" value="${String(r.h).padStart(2,"0")}:${String(r.m).padStart(2,"0")}"></div></div>
   <div class="set-sec acc-box" id="accBox"></div>`:""}
+  ${settingsExtra()}
   <div class="set-sec"><h3>Backup</h3><p>Copia i progressi come codice per spostarli su un altro dispositivo.</p><div class="row2"><button class="tbtn" id="bkCopy">Copia codice</button><button class="tbtn" id="bkImp">Importa codice</button></div><textarea class="field" id="bkText" hidden placeholder="Incolla qui il codice di backup" style="min-height:90px;margin-top:10px"></textarea><div class="msg" id="bkMsg"></div></div>
   <div class="tools" style="margin-top:24px"><button class="tbtn main" data-close>${first?"Inizia":"Fatto"}</button></div>`;
   $("#modal").classList.add("open");
@@ -1554,6 +1622,7 @@ function openSettings(first){
     $("#sTime").onchange=apply;
     renderAccount();
   }
+  wireSettingsExtra();
   $("#bkCopy").onclick=async()=>{const code=btoa(unescape(encodeURIComponent(JSON.stringify(state))));try{await navigator.clipboard.writeText(code);$("#bkMsg").textContent="Codice copiato: incollalo nell'altro dispositivo."}catch(e){const t=$("#bkText");t.hidden=false;t.value=code;t.select();$("#bkMsg").textContent="Copia il codice qui sopra."}};
   $("#bkImp").onclick=()=>{const t=$("#bkText");if(t.hidden||!t.value.trim()){t.hidden=false;t.value="";t.focus();$("#bkMsg").textContent="Incolla il codice e premi di nuovo «Importa codice».";return}
     try{const s=JSON.parse(decodeURIComponent(escape(atob(t.value.trim()))));if(s.v!==1)throw 0;state=Object.assign(defaults(),s);state.updatedAt=Date.now();save();renderLevel();fillMarquee();daily();renderAll();$("#bkMsg").textContent="Progressi importati.";t.value="";t.hidden=true}catch(e){$("#bkMsg").textContent="Codice non valido."}};
@@ -1622,6 +1691,140 @@ async function checkUpdate(){
     if(v>mine){const a=(j.assets||[]).find(x=>/\.apk$/i.test(x.name));const url=a?a.browser_download_url:j.html_url;
       const b=$("#upd");b.innerHTML=`Nuova versione disponibile <button id="updGo">Scarica</button><button class="x" id="updX">✕</button>`;b.hidden=false;
       $("#updGo").onclick=()=>{try{NATIVE.openUrl(url)}catch(e){location.href=url}};$("#updX").onclick=()=>b.hidden=true}}catch(e){}
+}
+
+
+/* =================== v3: IA, domande aperte, pause =================== */
+const AI_KINDS={i2j:"traduzione dall'italiano al giapponese",j2i:"traduzione dal giapponese all'italiano",text:"traduzione di un testo dal giapponese all'italiano",open:"domanda aperta: lo studente risponde in giapponese con parole sue"};
+const lvName=()=>state.level==="3"?"Lingua giapponese 3 (livello N3)":"Lingua giapponese 2 (livello N4)";
+function aiPrompt(p){
+  return `Sei un docente di lingua giapponese per studenti universitari italiani (corso: ${p.level}). Valuta la risposta dello studente.
+Tipo di esercizio: ${AI_KINDS[p.kind]||p.kind}
+Consegna o testo di partenza: «${p.src}»
+Risposta modello (indicativa, non l'unica corretta): «${p.ref}»
+Risposta dello studente: «${p.answer}»
+
+Criteri: correttezza grammaticale (particelle, coniugazioni, registro), lessico e kanji adatti al livello, aderenza alla consegna e al senso, naturalezza. Accetta soluzioni diverse dal modello se corrette. Sii incoraggiante ma onesto.
+Rispondi SOLO con un oggetto JSON valido, senza testo prima o dopo, con queste chiavi:
+{"voto": numero da 0 a 10 (anche decimale), "giudizio": "una frase", "bene": ["al massimo 3 punti positivi"], "errori": [{"parte": "frammento esatto della risposta dello studente", "correzione": "come correggere solo quel frammento", "spiegazione": "perché, in italiano, citando la regola"}], "consiglio": "un consiglio pratico per migliorare"}
+Non riscrivere tutta la risposta. Se la risposta è vuota o non pertinente, voto 0. Scrivi tutto in italiano tranne gli esempi in giapponese.`;
+}
+async function aiEval(p){
+  p=Object.assign({level:lvName()},p);
+  if(IS_APP){
+    if(!auth)throw {code:"login"};
+    if(!(await ensureToken()))throw {code:"login"};
+    const r=await fetch(SB_URL+"/functions/v1/correggi",{method:"POST",headers:{"Content-Type":"application/json",apikey:SB_KEY,Authorization:"Bearer "+auth.access_token},body:JSON.stringify(p)});
+    const j=await r.json().catch(()=>({}));
+    if(!r.ok)throw {code:j.error||"server",limit:j.limit};
+    return j;
+  }
+  const fn=await getSample();if(!fn)throw {code:"none"};
+  return await fn.json(aiPrompt(p),{modelTier:"default"});
+}
+async function aiAvailable(){return IS_APP||!!(await getSample())}
+function aiMsg(e){
+  return ({login:"Per la correzione IA serve un account: crealo da ⚙ → Salvataggio cloud (bastano email e password).",limit:`Hai usato tutte le correzioni IA di oggi (${e.limit||40}). Riprova domani!`,nokey:"La correzione IA non è ancora attiva sul server.",none:"Correzione IA non disponibile qui.",rate_limited:"Troppe richieste: riprova tra qualche minuto."})[e&&e.code]||"Correzione non riuscita: controlla la connessione e riprova.";
+}
+function renderAi(v){
+  const voto=Math.max(0,Math.min(10,+v.voto||0)),col=voto>=8?"var(--ok)":voto>=5?"var(--gold)":"var(--shu2)";
+  return `<div class="ai-res"><div class="ai-top"><div class="ai-score" style="--c:${col}"><b>${Math.round(voto*10)/10}</b><small>/10</small></div><div class="ai-j">${esc(v.giudizio||"")}</div></div>
+  ${(v.bene||[]).length?`<div class="ai-sec"><h4>✓ Bene</h4>${v.bene.map(b=>`<p>${esc(b)}</p>`).join("")}</div>`:""}
+  ${(v.errori||[]).length?`<div class="ai-sec"><h4>✗ Da correggere</h4>${v.errori.map(x=>`<div class="ai-err"><div><s>${esc(x.parte)}</s> → <b>${esc(x.correzione)}</b></div><small>${esc(x.spiegazione)}</small></div>`).join("")}</div>`:`<div class="ai-sec"><h4>✗ Da correggere</h4><p>Nessun errore trovato. 素晴らしい！</p></div>`}
+  ${v.consiglio?`<div class="ai-sec"><h4>💡 Consiglio</h4><p>${esc(v.consiglio)}</p></div>`:""}</div>`;
+}
+/* collega il pulsante ✨ di una riga di comandi; onScore(voto 0-10) facoltativo */
+function aiWire(stage,nr,p,onScore){
+  const b=nr.querySelector("[data-ai]");if(!b)return;
+  aiAvailable().then(ok=>{if(!ok)b.remove()});
+  b.onclick=async()=>{
+    b.disabled=true;b.textContent="Valuto…";
+    const box=H(`<div class="ai-box"><div class="h">Valutazione IA</div><span class="t">Sto leggendo la tua risposta…</span></div>`);
+    nr.before(box);const el=stage.querySelectorAll(".ai-box");const out=el[el.length-1];
+    try{const v=await aiEval(p);out.innerHTML=`<div class="h">Valutazione IA</div>`+renderAi(v);b.remove();if(onScore)onScore(+v.voto||0);
+      if(G&&!RM)G.from(out.querySelectorAll(".ai-sec,.ai-top"),{y:14,opacity:0,duration:.45,stagger:.06})}
+    catch(e){out.querySelector(".t").textContent=aiMsg(e);b.disabled=false;b.textContent="✨ Riprova";if(e&&e.code==="login")b.remove()}
+  };
+}
+
+/* domanda aperta */
+function stOpen(stage,{o}){
+  stage.append(H(`<div><div class="kind"><span class="jp">自由作文</span> domanda aperta</div><div class="q">Rispondi in giapponese con 2–4 frasi tue.</div>
+  <div class="src jp">${esc(o.q)} ${sayBtn(o.q,true)}</div>
+  <button class="tbtn" data-a="tr" style="margin-top:4px">Mostra traduzione</button><div class="sub" id="otr" hidden style="margin-top:8px">${esc(o.it)}</div>
+  <div class="hints">${o.h.map(h=>`<span>prova a usare <b>${esc(h)}</b></span>`).join("")}</div>
+  <textarea class="answer jp" lang="ja" placeholder="日本語で答えてください…" style="min-height:150px"></textarea>
+  <div class="next-row"><button class="tbtn" data-a="skip">Salta</button><button class="tbtn" data-a="ex">Vedi esempio</button><button class="tbtn main" data-ai>✨ Valuta con IA</button></div></div>`));
+  const ta=stage.querySelector("textarea"),nr=stage.querySelector(".next-row");let graded=false;
+  const finish=v=>{if(graded)return;graded=true;S.max++;S.score+=v>=8?1:v>=5?.5:0;tick();
+    if(!stage.querySelector(".solution"))nr.before(H(`<div class="solution"><div class="kind" style="color:#b33a22">Una risposta possibile</div><div class="jp">${esc(o.m)}${sayBtn(o.m,true)}</div></div>`));
+    nr.innerHTML=`<button class="tbtn main" data-a="next">Avanti →</button>`};
+  stage.querySelector("[data-a=tr]").onclick=e=>{$("#otr").hidden=false;e.target.remove()};
+  nr.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const a=b.dataset.a;
+    if(a==="next")next();
+    if(a==="skip"){if(!graded){S.max++;tick()}next()}
+    if(a==="ex"){if(!ta.value.trim()){toast("Prima prova a scrivere qualcosa");ta.focus();return}ta.readOnly=true;
+      nr.before(H(`<div class="solution"><div class="kind" style="color:#b33a22">Una risposta possibile</div><div class="jp">${esc(o.m)}${sayBtn(o.m,true)}</div><div class="sub" style="color:#6b6457;margin-top:8px">Come è andata la tua?</div></div>`));
+      b.remove();const ai=nr.querySelector("[data-ai]");
+      nr.insertAdjacentHTML("beforeend",`<button class="tbtn" data-g="0">Male</button><button class="tbtn" data-g="5">Così così</button><button class="tbtn" data-g="9">Bene</button>`);if(ai)nr.append(ai)}
+    if(b.dataset.g)finish(+b.dataset.g);
+  });
+  const aiBtn=nr.querySelector("[data-ai]");
+  aiBtn.addEventListener("click",ev=>{if(!ta.value.trim()){ev.stopImmediatePropagation();toast("Scrivi prima la tua risposta");ta.focus();return}ta.readOnly=true},true);
+  aiWire(stage,nr,{kind:"open",src:o.q+" ("+o.it+")",ref:o.m,get answer(){return ta.value}},v=>finish(v));
+}
+
+/* pausa motivazionale */
+function localVideos(){if(!NATIVE||!NATIVE.listVideos)return [];try{return JSON.parse(NATIVE.listVideos())||[]}catch(e){return []}}
+function breakItems(){const loc=localVideos();const base=SONGS.map((s,i)=>({type:"song",i})).concat((state.playlist||[]).map((p,i)=>({type:"own",i})));
+  if(!loc.length)return base;const out=[];base.forEach((b,i)=>{out.push(b);if(i%2===1)out.push({type:"local",v:loc[(i>>1)%loc.length]})});return out}
+function stBreak(stage,{k}){
+  const list=breakItems();const it=list[(state.songIx||0)%list.length];state.songIx=(state.songIx||0)+1;save();
+  const ko=KOTO[k%KOTO.length];
+  const igTag=t=>`https://www.instagram.com/explore/tags/${encodeURIComponent(t)}/`;
+  let card;
+  if(it.type==="song"){const s=SONGS[it.i];
+    const yt=s.yt?`https://www.youtube.com/watch?v=${s.yt}`:`https://www.youtube.com/results?search_query=${encodeURIComponent(s.q)}`;
+    card=`<div class="poster" style="--h:${(it.i*47)%360}"><div class="pk">${esc(s.t)}</div><div class="pr">${esc(s.r)}</div><div class="pa">${esc(s.a)} · ${s.y}</div></div>
+    <div class="sub" style="margin:14px 0 6px">Parole dal titolo</div><div class="vocab">${s.w.map(w=>`<div><span class="j">${esc(w[0])}</span><span class="r">${esc(w[1])}</span> ${sayBtn(w[0],true)}<br>${esc(w[2])}</div>`).join("")}</div>
+    <p class="bnote">${esc(s.n)}</p>
+    <div class="row2"><a class="tbtn main" href="${yt}" target="_blank" rel="noopener">▶ Guarda su YouTube</a><a class="tbtn" href="${igTag(s.t.replace(/\s/g,""))}" target="_blank" rel="noopener">📷 Reel su Instagram</a></div>`}
+  else if(it.type==="local"){const v=it.v;
+    card=`<video class="lvid" src="${esc(v.path)}" controls playsinline loop autoplay></video><div class="pa" style="margin-top:8px;color:var(--mute);font-size:13px">${esc(v.title)} · dai tuoi video</div>
+    <div class="row2" style="margin-top:12px">${IG_TAGS.map(x=>`<a class="tbtn" href="${igTag(x[1])}" target="_blank" rel="noopener">${esc(x[0])}</a>`).join("")}</div>`}
+  else{const p=state.playlist[it.i];
+    card=`<div class="poster own" style="--h:10"><div class="pk" style="font-size:34px">${esc(p.t)}</div><div class="pa">dalla tua playlist</div></div>
+    <div class="row2" style="margin-top:14px"><a class="tbtn main" href="${esc(p.u)}" target="_blank" rel="noopener">▶ Apri il video</a><a class="tbtn" href="${igTag(IG_TAGS[0][1])}" target="_blank" rel="noopener">📷 Altri reel #jpop</a></div>`}
+  stage.append(H(`<div><div class="kind"><span class="jp">休憩</span> pausa motivazionale</div><div class="q">Respira. Ricordati perché ami il Giappone.</div>
+  ${card}
+  <div class="koto"><div class="kj">${esc(ko[0])} ${sayBtn(ko[0],true)}</div><div class="kr">${esc(ko[1])}</div><div class="kl">«${esc(ko[2])}»</div><div class="km">${esc(ko[3])}</div></div>
+  <div class="next-row"><button class="tbtn main" data-a="next">Riprendo lo studio →</button></div></div>`));
+  stage.querySelector(".next-row").onclick=e=>{if(e.target.closest("[data-a=next]"))next()};
+}
+
+/* impostazioni extra: pause e playlist */
+function settingsExtra(){
+  const b=state.brk==null?8:state.brk;
+  return `<div class="set-sec"><h3>Pause motivazionali</h3><p>Una canzone giapponese, le parole del titolo e un proverbio ogni tanto durante la sessione.</p>
+  <div class="seg" id="sBrk"><button data-b="0" class="${b===0?"on":""}">Mai<small>solo studio</small></button><button data-b="8" class="${b===8?"on":""}">Ogni 8 esercizi<small>consigliato</small></button><button data-b="12" class="${b===12?"on":""}">Ogni 12 esercizi<small>meno spesso</small></button><button data-b="5" class="${b===5?"on":""}">Ogni 5 esercizi<small>più musica</small></button></div>
+  ${IS_APP&&NATIVE.pickVideo?`<h3 style="margin-top:18px;font-size:20px">Video dal telefono</h3><p>Scegli dalla galleria i video che ti fanno innamorare del Giappone (paesaggi, città, musica). Restano solo su questo telefono e partono nelle pause.</p><div class="clist" id="lvList" style="max-height:200px"></div><div class="row2"><button class="tbtn" id="lvAdd">＋ Aggiungi video</button></div>`:""}
+  <h3 style="margin-top:18px;font-size:20px">I miei link</h3><p>Aggiungi i tuoi reel di Instagram, video di YouTube o TikTok preferiti: compariranno nelle pause.</p>
+  <div class="clist" id="plList" style="max-height:200px"></div>
+  <input class="field" id="plT" placeholder="Titolo (es. Hikaru Utada - First Love)" style="margin-top:10px"><input class="field" id="plU" placeholder="Link (https://www.instagram.com/reel/…)" style="margin-top:8px">
+  <div class="row2"><button class="tbtn" id="plAdd">Aggiungi</button></div></div>`;
+}
+function wireSettingsExtra(){
+  $("#sBrk").onclick=e=>{const x=e.target.closest("button");if(!x)return;state.brk=+x.dataset.b;save();$$("#sBrk button").forEach(y=>y.classList.toggle("on",y===x))};
+  const draw=()=>{const pl=state.playlist||[];$("#plList").innerHTML=pl.length?pl.map((p,i)=>`<div class="citem"><span class="m" style="text-align:left">${esc(p.t)}</span><button data-pl="${i}" aria-label="Rimuovi">×</button></div>`).join(""):`<p class="note">Nessun link aggiunto.</p>`};
+  draw();
+  if($("#lvList")){const drawL=()=>{const L=localVideos();$("#lvList").innerHTML=L.length?L.map(v=>`<div class="citem"><span class="m" style="text-align:left">🎬 ${esc(v.title)} <small style="color:var(--mute)">${Math.round(v.size/1048576)} MB</small></span><button data-lv="${esc(v.name)}" aria-label="Rimuovi">×</button></div>`).join(""):`<p class="note">Nessun video importato.</p>`};
+    drawL();window.fudeVideosChanged=(msg)=>{drawL();if(msg)toast(msg)};
+    $("#lvAdd").onclick=()=>{try{NATIVE.pickVideo()}catch(e){toast("Non riesco ad aprire la galleria")}};
+    $("#lvList").onclick=e=>{const x=e.target.closest("[data-lv]");if(!x)return;try{NATIVE.deleteVideo(x.dataset.lv)}catch(er){}drawL()}}
+  $("#plList").onclick=e=>{const x=e.target.closest("[data-pl]");if(!x)return;state.playlist.splice(+x.dataset.pl,1);save();draw()};
+  $("#plAdd").onclick=()=>{const t=$("#plT").value.trim(),u=$("#plU").value.trim();
+    if(!/^https:\/\/(www\.)?(instagram\.com|youtube\.com|youtu\.be|m\.youtube\.com|tiktok\.com|vm\.tiktok\.com)\//i.test(u)){toast("Incolla un link di Instagram, YouTube o TikTok");return}
+    state.playlist=(state.playlist||[]).concat([{t:(t||"Video").slice(0,80),u:u.slice(0,300)}]).slice(-50);save();$("#plT").value="";$("#plU").value="";draw();toast("Video aggiunto alle pause")};
 }
 
 /* ---------- livello ---------- */
