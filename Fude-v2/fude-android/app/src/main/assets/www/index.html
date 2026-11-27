@@ -1662,23 +1662,56 @@ async function cloudPull(){
   else cloudPush();
 }
 function setCloudMsg(t,err){const m=$("#accMsg");if(m){m.textContent=t;m.classList.toggle("err",!!err)}}
-function renderAccount(){
+function saveSession(j){setAuth({access_token:j.access_token,refresh_token:j.refresh_token,exp:Date.now()+j.expires_in*1000,email:j.user.email,uid:j.user.id})}
+function renderAccount(mode){
   const box=$("#accBox");if(!box)return;
-  if(auth){box.innerHTML=`<h3>Account</h3><p>Connesso come <b style="color:var(--paper)">${esc(auth.email)}</b>. I progressi si salvano da soli sul cloud e li ritrovi accedendo da un altro telefono.</p><div class="row2"><button class="tbtn" id="accSync">Sincronizza ora</button><button class="tbtn" id="accOut">Esci</button></div><div class="msg" id="accMsg"></div>`;
+  if(auth){box.innerHTML=`<h3>Account</h3><p>Connesso come <b style="color:var(--paper)">${esc(auth.email)}</b>. I progressi si salvano da soli sul cloud e li ritrovi accedendo da un altro telefono. La correzione IA è attiva.</p><div class="row2"><button class="tbtn" id="accSync">Sincronizza ora</button><button class="tbtn" id="accOut">Esci</button></div><div class="msg" id="accMsg"></div>`;
     $("#accSync").onclick=async()=>{setCloudMsg("Sincronizzo…");try{await cloudPull();setCloudMsg("Sincronizzato.")}catch(e){setCloudMsg(e.msg||"Errore di rete",true)}};
     $("#accOut").onclick=()=>{setAuth(null);renderAccount();toast("Disconnesso: i progressi restano su questo telefono")};return}
-  box.innerHTML=`<h3>Salvataggio cloud</h3><p>Crea un account con la tua email (Gmail, iCloud o qualsiasi altra) per non perdere i progressi se cambi telefono.</p>
+  if(mode==="reset"){
+    box.innerHTML=`<h3>Nuova password</h3><p>1. Inserisci la tua email e premi «Mandami la mail».<br>2. Apri la mail «Reset Your Password», <b style="color:var(--paper)">tieni premuto</b> sul link e scegli «Copia indirizzo link».<br>3. Incollalo qui sotto, scegli la nuova password e conferma.</p>
+    <input class="field" id="rsMail" type="email" placeholder="email" autocomplete="email" value="${esc(($("#accMail")||{}).value||"")}">
+    <div class="row2"><button class="tbtn" id="rsSend">Mandami la mail</button></div>
+    <input class="field" id="rsLink" placeholder="incolla qui il link della mail" style="margin-top:12px">
+    <input class="field" id="rsPw" type="password" placeholder="nuova password (almeno 6 caratteri)" autocomplete="new-password">
+    <div class="row2"><button class="tbtn main" id="rsGo">Imposta la nuova password</button><button class="tbtn" id="rsBack">Indietro</button></div><div class="msg" id="accMsg"></div>`;
+    $("#rsBack").onclick=()=>renderAccount();
+    $("#rsSend").onclick=async()=>{const email=$("#rsMail").value.trim();if(!email){setCloudMsg("Scrivi la tua email",true);return}setCloudMsg("Invio…");
+      try{await sb("/auth/v1/recover",{method:"POST",body:JSON.stringify({email})});setCloudMsg("Mail inviata (controlla anche lo spam). Copia il link e incollalo qui sotto.")}
+      catch(e){setCloudMsg(e.status===429?"Hai chiesto troppe mail: aspetta qualche minuto e riprova.":(e.msg||"Errore di rete"),true)}};
+    $("#rsGo").onclick=async()=>{const link=$("#rsLink").value.trim(),pw=$("#rsPw").value;
+      let token="";try{const u=new URL(link);token=u.searchParams.get("token")||u.searchParams.get("token_hash")||""}catch(e){token=/^[a-f0-9]{20,}$/i.test(link)?link:""}
+      if(!token){setCloudMsg("Il link non sembra quello della mail: copia l'indirizzo completo del pulsante.",true);return}
+      if(pw.length<6){setCloudMsg("La password deve avere almeno 6 caratteri",true);return}
+      setCloudMsg("Verifico il link…");
+      try{const j=await sb("/auth/v1/verify",{method:"POST",body:JSON.stringify({type:"recovery",token_hash:token})});
+        if(!j||!j.access_token)throw {msg:"Link non valido"};
+        saveSession(j);
+        await sb("/auth/v1/user",{method:"PUT",body:JSON.stringify({password:pw})},true);
+        renderAccount();setCloudMsg("Password aggiornata e accesso fatto. Sincronizzo…");await cloudPull();setCloudMsg("Fatto: sei connesso.")}
+      catch(e){setCloudMsg(/expired|invalid/i.test(e.msg||"")?"Il link è scaduto o già usato: chiedi una nuova mail.":(e.msg||"Errore di rete"),true)}};
+    return;
+  }
+  box.innerHTML=`<h3>Salvataggio cloud</h3><p>Con un account email (Gmail, iCloud o altra) i progressi non si perdono se cambi telefono, e si attiva la correzione IA.</p>
   <input class="field" id="accMail" type="email" placeholder="email" autocomplete="email"><input class="field" id="accPw" type="password" placeholder="password (almeno 6 caratteri)" autocomplete="current-password">
-  <div class="row2"><button class="tbtn main" id="accIn">Accedi</button><button class="tbtn" id="accUp">Crea account</button></div><div class="msg" id="accMsg"></div>`;
+  <div class="row2"><button class="tbtn main" id="accIn">Accedi</button><button class="tbtn" id="accUp">Crea account</button></div>
+  <div class="row2" style="margin-top:6px"><button class="tbtn" id="accForgot" style="font-size:13px;padding:8px 14px">Password dimenticata?</button><button class="tbtn" id="accResend" style="font-size:13px;padding:8px 14px" hidden>Rimanda la mail di conferma</button></div>
+  <div class="msg" id="accMsg"></div>`;
   const cred=()=>({email:$("#accMail").value.trim(),password:$("#accPw").value});
+  $("#accForgot").onclick=()=>renderAccount("reset");
+  $("#accResend").onclick=async()=>{const email=$("#accMail").value.trim();if(!email)return;setCloudMsg("Invio…");
+    try{await sb("/auth/v1/resend",{method:"POST",body:JSON.stringify({type:"signup",email})});setCloudMsg("Mail di conferma inviata di nuovo (controlla anche lo spam).")}catch(e){setCloudMsg(e.status===429?"Troppe richieste: aspetta qualche minuto.":(e.msg||"Errore di rete"),true)}};
   $("#accIn").onclick=async()=>{const c=cred();if(!c.email||!c.password){setCloudMsg("Inserisci email e password",true);return}setCloudMsg("Accesso…");
-    try{const j=await sb("/auth/v1/token?grant_type=password",{method:"POST",body:JSON.stringify(c)});setAuth({access_token:j.access_token,refresh_token:j.refresh_token,exp:Date.now()+j.expires_in*1000,email:j.user.email,uid:j.user.id});renderAccount();setCloudMsg("Connesso. Sincronizzo…");await cloudPull();setCloudMsg("Connesso e sincronizzato.")}
-    catch(e){setCloudMsg(/confirm/i.test(e.msg||"")?"Prima conferma l'email: apri il link che ti abbiamo mandato, poi accedi.":(e.status===400?"Email o password errate.":(e.msg||"Errore di rete")),true)}};
+    try{const j=await sb("/auth/v1/token?grant_type=password",{method:"POST",body:JSON.stringify(c)});saveSession(j);renderAccount();setCloudMsg("Connesso. Sincronizzo…");await cloudPull();setCloudMsg("Connesso e sincronizzato.")}
+    catch(e){if(/confirm/i.test(e.msg||"")){setCloudMsg("L'email non è ancora confermata: apri il link che ti abbiamo mandato, oppure fattelo rimandare.",true);$("#accResend").hidden=false}
+      else setCloudMsg(e.status===400?"Email o password sbagliate. Se non ricordi la password, premi «Password dimenticata?».":(e.msg||"Errore di rete"),true)}};
   $("#accUp").onclick=async()=>{const c=cred();if(!c.email||c.password.length<6){setCloudMsg("Email valida e password di almeno 6 caratteri",true);return}setCloudMsg("Creo l'account…");
     try{const j=await sb("/auth/v1/signup",{method:"POST",body:JSON.stringify(c)});
-      if(j&&j.access_token){setAuth({access_token:j.access_token,refresh_token:j.refresh_token,exp:Date.now()+j.expires_in*1000,email:j.user.email,uid:j.user.id});renderAccount();cloudPush()}
-      else setCloudMsg("Account creato. Ti abbiamo mandato una mail: apri il link di conferma (la pagina che si apre può risultare vuota, va bene così), poi torna qui e premi «Accedi».")}
-    catch(e){setCloudMsg(e.msg||"Errore di rete",true)}};
+      if(j&&j.access_token){saveSession(j);renderAccount();cloudPush();return}
+      const u=(j&&j.user)||j||{};
+      if(Array.isArray(u.identities)&&u.identities.length===0){setCloudMsg("Questa email ha già un account. Premi «Accedi» con la tua password; se non la ricordi, usa «Password dimenticata?».",true);return}
+      setCloudMsg("Account creato. Ti abbiamo mandato una mail: apri il link di conferma (la pagina che si apre può risultare vuota, va bene così), poi torna qui e premi «Accedi».");$("#accResend").hidden=false}
+    catch(e){setCloudMsg(e.status===429?"Troppe richieste: aspetta qualche minuto.":/registered|exists/i.test(e.msg||"")?"Questa email ha già un account: premi «Accedi».":(e.msg||"Errore di rete"),true)}};
 }
 
 /* ---- aggiornamenti (solo app) ---- */
