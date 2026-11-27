@@ -22,6 +22,16 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.window.OnBackInvokedDispatcher;
 
+import android.database.Cursor;
+import android.provider.OpenableColumns;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Locale;
 
 public class MainActivity extends Activity {
@@ -30,6 +40,8 @@ public class MainActivity extends Activity {
     private WebView web;
     private TextToSpeech tts;
     private volatile boolean ttsReady = false;
+    private static final int PICK_VIDEO = 41;
+    private static final long MAX_VIDEO = 300L * 1024 * 1024;
 
     @SuppressLint({"SetJavaScriptEnabled", "JavascriptInterface"})
     @Override
@@ -58,6 +70,7 @@ public class MainActivity extends Activity {
         s.setDomStorageEnabled(true);
         s.setDatabaseEnabled(true);
         s.setAllowFileAccess(true);
+        s.setAllowFileAccessFromFileURLs(false);
         s.setMediaPlaybackRequiresUserGesture(false);
         s.setTextZoom(100);
 
@@ -115,6 +128,37 @@ public class MainActivity extends Activity {
 
         @JavascriptInterface public void openUrl(String url) { runOnUiThread(() -> openExternal(url)); }
 
+        /** Apre la galleria per scegliere un video da usare nelle pause. */
+        @JavascriptInterface public void pickVideo() {
+            runOnUiThread(() -> {
+                Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT).addCategory(Intent.CATEGORY_OPENABLE).setType("video/*");
+                try { startActivityForResult(i, PICK_VIDEO); } catch (Exception e) { notifyVideos("Non riesco ad aprire la galleria"); }
+            });
+        }
+
+        /** Elenco dei video importati (salvati nella memoria privata dell'app). */
+        @JavascriptInterface public String listVideos() {
+            JSONArray a = new JSONArray();
+            File[] fs = videoDir().listFiles();
+            if (fs != null) {
+                java.util.Arrays.sort(fs, (x, y) -> Long.compare(y.lastModified(), x.lastModified()));
+                for (File f : fs) {
+                    try {
+                        String n = f.getName();
+                        String title = n.replaceFirst("^\\d+_", "").replaceFirst("\\.[^.]+$", "").replace('_', ' ');
+                        a.put(new JSONObject().put("name", n).put("title", title)
+                                .put("path", "file://" + f.getAbsolutePath()).put("size", f.length()));
+                    } catch (Exception ignored) {}
+                }
+            }
+            return a.toString();
+        }
+
+        @JavascriptInterface public void deleteVideo(String name) {
+            File f = new File(videoDir(), new File(name).getName());
+            if (f.exists()) f.delete();
+        }
+
         /** Attiva o disattiva il promemoria giornaliero all'ora indicata. */
         @JavascriptInterface public void setReminder(boolean on, int hour, int minute) {
             SharedPreferences p = Reminders.prefs(MainActivity.this);
@@ -136,6 +180,53 @@ public class MainActivity extends Activity {
                     .putInt("day", day).putBoolean("done", done)
                     .putInt("left", remaining).putInt("streak", streak).apply();
         }
+    }
+
+    private File videoDir() {
+        File d = new File(getFilesDir(), "videos");
+        if (!d.exists()) d.mkdirs();
+        return d;
+    }
+
+    private void notifyVideos(String msg) {
+        String m = msg == null ? "" : msg.replace("\\", "").replace("'", "\\'");
+        runOnUiThread(() -> web.evaluateJavascript("window.fudeVideosChanged && fudeVideosChanged('" + m + "')", null));
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode != PICK_VIDEO || resultCode != RESULT_OK || data == null || data.getData() == null) return;
+        Uri uri = data.getData();
+        new Thread(() -> {
+            String name = "video";
+            long size = -1;
+            try (Cursor c = getContentResolver().query(uri, null, null, null, null)) {
+                if (c != null && c.moveToFirst()) {
+                    int ni = c.getColumnIndex(OpenableColumns.DISPLAY_NAME), si = c.getColumnIndex(OpenableColumns.SIZE);
+                    if (ni >= 0) name = c.getString(ni);
+                    if (si >= 0) size = c.getLong(si);
+                }
+            } catch (Exception ignored) {}
+            if (size > MAX_VIDEO) { notifyVideos("Video troppo grande (massimo 300 MB)"); return; }
+            String safe = name.replaceAll("[^\\p{L}\\p{N}._ -]", "").replace(' ', '_');
+            if (safe.isEmpty()) safe = "video.mp4";
+            File out = new File(videoDir(), System.currentTimeMillis() + "_" + safe);
+            try (InputStream in = getContentResolver().openInputStream(uri); OutputStream os = new FileOutputStream(out)) {
+                byte[] buf = new byte[1 << 16];
+                long tot = 0;
+                int r;
+                while ((r = in.read(buf)) > 0) {
+                    tot += r;
+                    if (tot > MAX_VIDEO) throw new Exception("big");
+                    os.write(buf, 0, r);
+                }
+                notifyVideos("Video aggiunto alle pause");
+            } catch (Exception e) {
+                out.delete();
+                notifyVideos("Importazione non riuscita");
+            }
+        }).start();
     }
 
     private void handleBack() {
